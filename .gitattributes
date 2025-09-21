@@ -1,0 +1,41 @@
+# Explicitly declare text files to be normalized (LF in the repository, native on checkout)
+*.java text eol=lf linguist-language=Java
+*.js text eol=lf linguist-language=JavaScript
+*.jsx text eol=lf linguist-language=JavaScript
+*.ts text eol=lf linguist-language=TypeScript
+*.tsx text eol=lf linguist-language=TypeScript
+*.css text eol=lf linguist-language=CSS
+*.html text eol=lf linguist-language=HTML
+*.json text eol=lf linguist-language=JSON
+*.md text eol=lf linguist-language=Markdown
+*.properties text eol=lf linguist-language=Java-Properties
+*.xml text eol=lf linguist-language=XML
+*.yml text eol=lf linguist-language=YAML
+*.yaml text eol=lf linguist-language=YAML
+
+# Denote all files that are truly binary and should not be modified
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.jar binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.class binary
+
+# Mark vendored code to be excluded from language statistics
+**/target/** linguist-generated=true
+**/node_modules/** linguist-vendored=true
+**/dist/** linguist-generated=true
+**/build/** linguist-generated=true
+**/.mvn/** linguist-vendored=true
+**/openJdk-24/** linguist-vendored=true
+
+# Explicitly mark Java as the primary language
+*.c linguist-detectable=false
+*.h linguist-detectable=false
+*.cpp linguist-detectable=false
+*.hpp linguist-detectable=false
+*.cc linguist-detectable=false
