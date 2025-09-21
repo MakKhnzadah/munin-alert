@@ -1,0 +1,76 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: var(--background-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.alert-warning {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.alert-info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.alert-danger {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.alert-success {
+  background-color: var(--success-color);
+  color: white;
+}
