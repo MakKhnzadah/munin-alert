@@ -1,10 +1,12 @@
 package com.muninalert.backend_munin_alert.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class NotificationMessage extends WebSocketMessage {
     private String message;
     private NotificationType notificationType;

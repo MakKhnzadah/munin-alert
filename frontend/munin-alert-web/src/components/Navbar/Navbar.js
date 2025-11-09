@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
+import LogoShield from '../../assets/images/LogoShield.svg';
 
 /**
  * Navbar Component
@@ -34,7 +35,8 @@ const Navbar = () => {
       <div className="navbar-container">
         {/* App logo/name that links to home */}
         <Link to="/" className="navbar-logo">
-          Munin Alert
+          <img src={LogoShield} alt="Munin Alert" className="navbar-logo-img" />
+          <span className="navbar-logo-text">Munin Alert</span>
         </Link>
         
         {/* Navigation menu */}

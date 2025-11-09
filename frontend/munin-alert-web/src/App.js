@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import './App.css';
+import NetworkDiagnostic from './components/NetworkDiagnostic/NetworkDiagnostic';
 
 // Components
 import Navbar from './components/Navbar/Navbar';
@@ -16,6 +17,11 @@ import AlertPage from './pages/Alert/AlertPage';
 import GroupsPage from './pages/Groups/GroupsPage';
 import ProfilePage from './pages/Profile/ProfilePage';
 import NotFound from './pages/NotFound/NotFound';
+import BackendTest from './pages/BackendTest/BackendTest';
+import SettingsPage from './pages/Settings/SettingsPage';
+import ActivateAlarmPage from './pages/Alarm/ActivateAlarmPage';
+import AlarmCountdownPage from './pages/Alarm/AlarmCountdownPage';
+import MapPage from './pages/Map/MapPage';
 
 /**
  * App Component
@@ -39,6 +45,9 @@ function App() {
     <div className="app">
       {/* Global navigation */}
       <Navbar />
+      
+      {/* Network Diagnostic Tool (only in development mode) */}
+      {process.env.NODE_ENV === 'development' && <NetworkDiagnostic />}
       
       {/* Main content area */}
       <main className="main-content">
@@ -73,8 +82,27 @@ function App() {
             path="/profile" 
             element={user ? <ProfilePage /> : <Navigate to="/login" />} 
           />
+          <Route 
+            path="/settings" 
+            element={user ? <SettingsPage /> : <Navigate to="/login" />} 
+          />
+          <Route
+            path="/alarm"
+            element={user ? <ActivateAlarmPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/alarm/countdown"
+            element={user ? <AlarmCountdownPage /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/map"
+            element={user ? <MapPage /> : <Navigate to="/login" />}
+          />
           
           {/* Fallback route for non-existent paths */}
+          {/* Testing route for backend connectivity */}
+          <Route path="/backend-test" element={<BackendTest />} />
+          
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

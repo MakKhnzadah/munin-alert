@@ -123,7 +123,7 @@ public class GroupController {
         }
         
         // Verify the user exists
-        User userToAdd = userService.getUserById(userId)
+        userService.getUserById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
         
         Group updatedGroup = groupService.addMemberToGroup(id, userId);

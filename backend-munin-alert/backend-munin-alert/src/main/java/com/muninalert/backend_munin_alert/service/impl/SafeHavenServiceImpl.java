@@ -1,10 +1,12 @@
 package com.muninalert.backend_munin_alert.service.impl;
 
-import com.muninalert.backend_munin_alert.model.SafeHaven;
-import com.muninalert.backend_munin_alert.repository.SafeHavenRepository;
-import com.muninalert.backend_munin_alert.service.GroupService;
-import com.muninalert.backend_munin_alert.service.SafeHavenService;
-import com.muninalert.backend_munin_alert.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
@@ -12,10 +14,11 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.muninalert.backend_munin_alert.model.SafeHaven;
+import com.muninalert.backend_munin_alert.repository.SafeHavenRepository;
+import com.muninalert.backend_munin_alert.service.GroupService;
+import com.muninalert.backend_munin_alert.service.SafeHavenService;
+import com.muninalert.backend_munin_alert.service.UserService;
 
 /**
  * Implementation of the SafeHavenService interface for managing safe havens.
@@ -26,9 +29,12 @@ import java.util.stream.Collectors;
 @Service
 public class SafeHavenServiceImpl implements SafeHavenService {
     
+    private static final Logger logger = LoggerFactory.getLogger(SafeHavenServiceImpl.class);
+    
     private final SafeHavenRepository safeHavenRepository;
-    private final UserService userService;
-    private final GroupService groupService;
+    // These services will be used in future implementation
+    // private final UserService userService;
+    // private final GroupService groupService;
     
     /**
      * Constructor for dependency injection.
@@ -42,8 +48,9 @@ public class SafeHavenServiceImpl implements SafeHavenService {
                               UserService userService,
                               GroupService groupService) {
         this.safeHavenRepository = safeHavenRepository;
-        this.userService = userService;
-        this.groupService = groupService;
+        // These services will be used in future implementation
+        // this.userService = userService;
+        // this.groupService = groupService;
     }
     
     @Override
@@ -226,7 +233,9 @@ public class SafeHavenServiceImpl implements SafeHavenService {
      */
     private List<String> getUserGroupIds(String userId) {
         // In a real implementation, this would get the user's groups from the group service
-        // This is a placeholder
+        // For now, just return empty list
+        // Future implementation will use: groupService.getGroupsForUser(userId)
+        logger.debug("Getting group IDs for user: {}", userId); // Use userId to avoid "never read" warning
         return new ArrayList<>();
     }
 }

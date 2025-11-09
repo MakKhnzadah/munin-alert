@@ -7,16 +7,17 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
+    "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
+    "node-fetch": "^2.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
-    "web-vitals": "^2.1.4",
-    "leaflet": "^1.9.4",
-    "react-leaflet": "^4.2.1",
-    "jwt-decode": "^4.0.0"
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,5 +43,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:8081"
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  }
 }

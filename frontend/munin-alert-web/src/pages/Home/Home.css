@@ -3,31 +3,30 @@
   flex-direction: column;
 }
 
+/* Hero section matches mobile design: light background, centered logo + title */
 .hero-container {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1)), 
-              var(--primary-color);
-  height: 90vh;
+  background: var(--bg);
+  min-height: 75vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.2);
-  object-fit: contain;
   text-align: center;
-  padding: 0 20px;
+  padding: var(--space-4) var(--space-3);
 }
 
 .hero-container h1 {
-  color: #fff;
-  font-size: 70px;
-  margin-top: -100px;
+  color: var(--text-primary);
+  font-size: 56px;
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-2);
 }
 
 .hero-container p {
-  margin-top: 8px;
-  color: #fff;
-  font-size: 32px;
+  margin-top: var(--space-1);
+  color: var(--text-secondary);
+  font-size: 22px;
 }
 
 .hero-btns {
@@ -38,24 +37,52 @@
   margin: 6px;
 }
 
+/* Override primary in hero to use neutral login style for GET STARTED */
+.hero-btns .btn-primary {
+  background: #d9d9d9;
+  color: #111;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  font-weight: var(--font-weight-bold);
+}
+
+.hero-btns .btn-primary:hover,
+.hero-btns .btn-primary:focus { background: #cfcfcf; }
+.hero-btns .btn-primary:active { transform: translateY(1px); }
+
 .btn-outline {
-  background-color: transparent;
-  color: #fff;
+  background-color: #fff; /* keep white base like the design */
+  color: var(--brand-red);
   padding: 10px 20px;
-  border: 1px solid #fff;
-  transition: all 0.3s ease-out;
+  border: 2px solid var(--brand-red);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.05s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08); /* subtle elevation like mockup */
 }
 
 .btn-outline:hover {
-  background: #fff;
-  color: #242424;
-  transition: all 0.3s ease-out;
+  background-color: rgba(255,59,48,0.06); /* light red tint on hover */
+  color: var(--brand-red);
 }
 
+.btn-outline:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255,59,48,0.25), 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.btn-outline:active {
+  background-color: rgba(255,59,48,0.12); /* a bit stronger on press */
+  border-color: var(--brand-red);
+  color: var(--brand-red);
+  transform: translateY(1px);
+}
+
+/* Feature cards area */
 .features-section {
-  padding: 80px 20px;
+  padding: 64px 20px;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: var(--bg);
 }
 
 .features-section h2 {
@@ -72,13 +99,14 @@
 }
 
 .feature-card {
-  background: #fff;
-  width: 250px;
+  background: var(--surface);
+  width: 260px;
   margin: 20px;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  padding: 30px 28px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--neutral-300);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .feature-card:hover {
@@ -92,7 +120,8 @@
 
 .feature-card h3 {
   margin-bottom: 15px;
-  color: var(--primary-color);
+  color: var(--brand-red);
+  font-weight: var(--font-weight-medium);
 }
 
 .how-it-works {
@@ -121,47 +150,44 @@
 }
 
 .step-number {
-  width: 50px;
-  height: 50px;
-  background-color: var(--primary-color);
-  color: white;
+  width: 56px;
+  height: 56px;
+  background-color: var(--brand-red);
+  color: #fff;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 22px;
+  font-weight: var(--font-weight-bold);
   margin: 0 auto 20px;
+  box-shadow: var(--shadow-md);
 }
 
 .step h3 {
   margin-bottom: 15px;
-  color: var(--primary-color);
+  color: var(--brand-red);
+  font-weight: var(--font-weight-medium);
 }
 
 @media screen and (max-width: 960px) {
   .hero-container h1 {
-    font-size: 48px;
-    margin-top: -100px;
+    font-size: 42px;
+  }
+  .hero-container p {
+    font-size: 18px;
   }
 }
 
 @media screen and (max-width: 768px) {
   .hero-container h1 {
-    font-size: 40px;
-    margin-top: -50px;
+    font-size: 36px;
   }
-
   .hero-container p {
-    font-size: 24px;
+    font-size: 16px;
   }
-
-  .btn-mobile {
-    display: block;
-    text-decoration: none;
-  }
-
-  .btn {
+  .feature-card {
     width: 100%;
+    max-width: 340px;
   }
 }

@@ -1,5 +1,11 @@
 package com.muninalert.backend_munin_alert.service.impl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.muninalert.backend_munin_alert.model.Alert;
 import com.muninalert.backend_munin_alert.model.Event;
 import com.muninalert.backend_munin_alert.model.Location;
@@ -9,11 +15,6 @@ import com.muninalert.backend_munin_alert.service.AlertService;
 import com.muninalert.backend_munin_alert.service.EventService;
 import com.muninalert.backend_munin_alert.service.UserService;
 import com.muninalert.backend_munin_alert.service.WebSocketService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implementation of the EventService interface for managing events.
@@ -114,40 +115,33 @@ public class EventServiceImpl implements EventService {
         // Save the event first
         Event savedEvent = createEvent(event);
         
-        // Process based on event type
+        // Process based on event type using modern switch expression
         switch (event.getEventType()) {
-            case FALL_DETECTED:
-            case COLLISION_DETECTED:
-            case RAPID_DECELERATION:
+            case FALL_DETECTED, COLLISION_DETECTED, RAPID_DECELERATION -> {
                 // For critical safety events, generate an alert if confidence is high enough
                 if (event.getConfidence() >= 0.7) {
                     generateAlertFromEvent(event);
                 }
-                break;
+            }
                 
-            case UNUSUAL_MOVEMENT:
-            case INACTIVITY:
+            case UNUSUAL_MOVEMENT, INACTIVITY -> {
                 // For potential safety issues, generate an alert if confidence is very high
                 if (event.getConfidence() >= 0.9) {
                     generateAlertFromEvent(event);
                 }
-                break;
+            }
                 
-            case MANUAL_ALERT:
+            case MANUAL_ALERT -> 
                 // Always generate an alert for manual triggers
                 generateAlertFromEvent(event);
-                break;
                 
-            case ENTER_RISK_AREA:
+            case ENTER_RISK_AREA -> 
                 // Send notification but don't generate alert
                 notifyUserOfRiskArea(event);
-                break;
                 
-            case ENTER_SAFEHAVEN:
-            case EXIT_SAFEHAVEN:
-            case EXIT_RISK_AREA:
+            case ENTER_SAFEHAVEN, EXIT_SAFEHAVEN, EXIT_RISK_AREA -> 
                 // Just record these events, no immediate action needed
-                break;
+                {}
         }
         
         // Update user's last known location if available
@@ -189,31 +183,32 @@ public class EventServiceImpl implements EventService {
         alert.setCreatedAt(System.currentTimeMillis());
         alert.setUpdatedAt(System.currentTimeMillis());
         
-        // Map event type to alert type
+        // Map event type to alert type using modern switch expression
         switch (event.getEventType()) {
-            case FALL_DETECTED:
+            case FALL_DETECTED -> {
                 alert.setAlertType(Alert.AlertType.FALL_DETECTED);
                 alert.setMessage("Fall detected. User may need assistance.");
-                break;
-            case COLLISION_DETECTED:
+            }
+            case COLLISION_DETECTED -> {
                 alert.setAlertType(Alert.AlertType.COLLISION_DETECTED);
                 alert.setMessage("Collision detected. User may need assistance.");
-                break;
-            case RAPID_DECELERATION:
+            }
+            case RAPID_DECELERATION -> {
                 alert.setAlertType(Alert.AlertType.COLLISION_DETECTED);
                 alert.setMessage("Rapid deceleration detected. User may need assistance.");
-                break;
-            case INACTIVITY:
+            }
+            case INACTIVITY -> {
                 alert.setAlertType(Alert.AlertType.INACTIVITY);
                 alert.setMessage("Unusual inactivity detected. User may need assistance.");
-                break;
-            case MANUAL_ALERT:
+            }
+            case MANUAL_ALERT -> {
                 alert.setAlertType(Alert.AlertType.MANUAL);
                 alert.setMessage("User has manually triggered an alert.");
-                break;
-            default:
+            }
+            default -> {
                 alert.setAlertType(Alert.AlertType.MANUAL);
                 alert.setMessage("Alert triggered due to safety event.");
+            }
         }
         
         // Find user's group and add to alert

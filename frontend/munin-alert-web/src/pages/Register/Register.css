@@ -48,8 +48,24 @@
 .btn-block {
   width: 100%;
   margin-top: 10px;
-  padding: 12px;
+  padding: 14px;
   font-size: 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #d9d9d9; /* match login neutral style */
+  color: #111;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  transition: background-color 0.2s ease, transform 0.05s ease;
+}
+
+.btn-block:hover, .btn-block:focus {
+  background: #cfcfcf;
+}
+
+.btn-block:active {
+  transform: translateY(1px);
 }
 
 .register-footer {
