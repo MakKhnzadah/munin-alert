@@ -1,8 +1,10 @@
 package com.muninalert.backend_munin_alert.service;
 
-import com.muninalert.backend_munin_alert.model.User;
-import com.muninalert.backend_munin_alert.model.UserPreferences;
-import com.muninalert.backend_munin_alert.repository.UserRepository;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,11 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import com.muninalert.backend_munin_alert.model.User;
+import com.muninalert.backend_munin_alert.model.UserPreferences;
+import com.muninalert.backend_munin_alert.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -65,6 +65,25 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Attempts to find a user by username first; if not present, tries email.
+     * Accepts a flexible identifier which can be either a username or an email.
+     *
+     * @param identifier username or email
+     * @return optional user
+     */
+    public Optional<User> findByUsernameOrEmail(String identifier) {
+        if (identifier == null || identifier.isBlank()) {
+            return Optional.empty();
+        }
+        // Heuristic: if contains '@' assume it's an email (still safe to try username first)
+        Optional<User> byUsername = userRepository.findByUsername(identifier);
+        if (byUsername.isPresent()) {
+            return byUsername;
+        }
+        return userRepository.findByEmail(identifier);
     }
 
     public List<User> getAllUsers() {
