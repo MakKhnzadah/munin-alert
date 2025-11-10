@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
 
   const fetchCurrentUser = async () => {
     try {
-      const response = await axios.get('/api/users/current');
+      const response = await axios.get('/api/users/me');
       setUser(response.data);
       setLoading(false);
     } catch (err) {
@@ -59,12 +59,11 @@ export function AuthProvider({ children }) {
       // Set default auth header for future requests
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       
-      // Set user state with available information
-      // Will be enriched with full profile in fetchCurrentUser
-      setUser({
-        id: userId,
-        username: responseUsername
-      });
+      // Set minimal user then enrich by fetching full profile
+      setUser({ id: userId, username: responseUsername });
+
+      // Fetch full current user profile immediately
+      await fetchCurrentUser();
       
       return true;
     } catch (err) {
@@ -176,6 +175,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    setUser, // expose for profile updates
   };
 
   return (

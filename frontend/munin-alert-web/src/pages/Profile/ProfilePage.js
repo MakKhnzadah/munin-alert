@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
+import { userService } from '../../services/ApiService';
 import './ProfilePage.css';
 
 /**
@@ -12,7 +13,7 @@ import './ProfilePage.css';
  * @returns {JSX.Element} The rendered profile page component
  */
 const ProfilePage = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, setUser } = useAuth();
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
@@ -47,14 +48,29 @@ const ProfilePage = () => {
   const handleSaveProfile = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('/api/users/profile', {
+      // Build full payload to avoid nulling fields on backend
+      const current = user || {};
+      const payload = {
+        ...current,
         firstName: profileData.firstName,
         lastName: profileData.lastName,
-        phoneNumber: profileData.phoneNumber
-      });
-      
+        email: profileData.email, // read-only in UI but send to preserve
+        phoneNumber: profileData.phoneNumber,
+      };
+      // Never send password from client for profile update
+      delete payload.password;
+
+      await userService.updateProfile(current.id, payload);
+      // Update local state
       setMessage({ type: 'success', text: 'Profile updated successfully!' });
       setIsEditing(false);
+      // Refresh user in context
+      // Fetch fresh data from server to ensure consistency
+      const refreshed = await userService.getCurrentUser();
+      if (refreshed?.data) {
+        setUser(refreshed.data);
+      }
+      
     } catch (error) {
       console.error('Error updating profile:', error);
       setMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
@@ -71,10 +87,7 @@ const ProfilePage = () => {
     }
     
     try {
-      await axios.put('/api/users/change-password', {
-        currentPassword: profileData.currentPassword,
-        newPassword: profileData.newPassword
-      });
+      await userService.changePassword(user.id, profileData.currentPassword, profileData.newPassword);
       
       setMessage({ type: 'success', text: 'Password changed successfully!' });
       setIsChangingPassword(false);

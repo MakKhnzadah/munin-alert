@@ -1,0 +1,27 @@
+@import '../../index.css';
+
+.alarmActivate-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) 120px;
+  text-align: center;
+}
+
+.alarmActivate-header h1 {
+  margin: 0 0 24px;
+  font-size: 2.4rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+}
+
+.alarmActivate-center {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0 16px;
+}
+
+.alarmActivate-instruction {
+  margin: 12px 0 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}

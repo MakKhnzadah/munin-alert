@@ -1,11 +1,13 @@
 package com.muninalert.backend_munin_alert.model;
 
-import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.ArrayList;
-import java.util.List;
+
+import lombok.Data;
 
 @Data
 @Document(collection = "users")
@@ -23,6 +25,8 @@ public class User {
     private String email;
     
     private String password;
+
+    private String phoneNumber;
     
     private List<String> roles = new ArrayList<>();
     

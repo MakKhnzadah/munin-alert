@@ -1,0 +1,81 @@
+Alignment Summary
+Presentation Themes -> Status:
+
+Core Value Proposition (Immediate alerts, preventative safety, trust networks, real-time awareness)
+
+Backend groundwork largely present (alerts, groups, safe havens, risk alerts concepts in docs).
+Frontend currently only has basic Home + Navbar; trust networks, watch mode, risk overlays, and safe haven UI not yet implemented.
+Technical Excellence (Spring Boot, MongoDB, JWT, WebSocket /ws, geospatial)
+
+Spring Boot backend running and health OK.
+MongoDB usage implied; need to confirm collections and geospatial indexes in code (not yet verified).
+JWT endpoints exist (docs mention /api/auth/login) but frontend integration not shown.
+WebSocket path expected at /ws; frontend ECONNREFUSED indicates mapping or handshake mismatch (investigation pending).
+Geospatial logic (safe havens, proximity) not surfaced in UI yet.
+Demonstration Highlights (alert creation/response, safe haven navigation, group management, risk avoidance)
+
+None of these flows are implemented on the current frontend; they are backend/domain concepts only.
+Use Cases & User Scenarios (campus walk, family emergency, hiking, travel, elderly care, event safety)
+
+Scenarios documented; app UI only covers landing page. Need dedicated flows/components (Watch Mode, Family Group dashboard, Group Map, Alert Panel, Safe Haven list, Risk Layer toggle).
+Implementation Journey & Status
+
+Docs claim “Core backend services implemented” & “API endpoints established”.
+Frontend real-time and auth integration not yet started beyond styling.
+Future Roadmap (AI risk prediction, wearables, voice, AR, international services)
+
+All future; nothing built—safe to defer.
+Technical Details (JWT, WebSocket STOMP topics, collections, scaling, security)
+
+Need to confirm actual backend code implements: /ws endpoint, STOMP destinations (/user/queue/updates, /topic/group/{id}, etc.).
+Need client STOMP configuration and token use.
+Gaps & Actionable Tasks
+Backend Verification:
+
+Confirm existence and configuration of /ws endpoint and STOMP broker destinations.
+Verify MongoDB collections and indexes (users, alerts, groups, safehavens, riskAlerts).
+Check security config for JWT + WebSocket handshake filtering.
+Frontend Feature Build (near-term):
+
+Auth integration:
+Login form; call /api/auth/login; store JWT; attach Authorization header.
+WebSocket/STOMP client:
+Connect to /ws with JWT.
+Subscribe to /user/queue/updates and sample /topic/alerts to validate.
+Alert creation UI:
+Panic button component triggering POST /api/alerts (assumed).
+Alert status panel (active, resolved).
+Basic Map screen:
+Leaflet map; overlay safe havens (mock fetch) & risk areas.
+Display user location (browser geolocation).
+Groups management:
+Minimal create/list groups UI; add/remove member stubs.
+Watch Mode:
+Start/stop watch; periodic location send over WebSocket.
+Supporting Enhancements:
+
+Centralized design tokens applied to new components.
+Loading/error state pattern (spinner + toast).
+Shared API client wrapper with JWT injection.
+WebSocket ECONNREFUSED Fix Path:
+
+Step 1: Read backend WebSocket config file(s) (likely under backend/src/... WebSocketConfig).
+Step 2: Align frontend URL: If server is on 8081 and dev proxy rewrites, ensure correct path (e.g., ws://localhost:3000/ws -> proxy -> 8081).
+Step 3: Implement STOMP client with fallback/retry.
+Step 4: Test subscriptions & message flow.
+Testing & Validation:
+
+Add minimal backend integration tests for WebSocket handshake if absent.
+Frontend: create quick Jest test for API client token attach (if test setup exists).
+Manual functional smoke: login → connect WS → trigger dummy alert → receive subscription message.
+Documentation Updates:
+
+Extend HOW_TO_RUN.md with WebSocket troubleshooting and first-time auth steps after implementation.
+Add a ARCHITECTURE_FRONTEND.md summarizing planned UI modules aligned to presentation sections.
+Suggested Immediate Next Steps (Order)
+Inspect backend WebSocket and security config files to resolve /ws connection.
+Implement frontend auth flow (login component + token storage).
+Add STOMP client and verify a successful connection.
+Build minimal Alert button + subscription to alert updates.
+Introduce Map page with safe haven placeholders.
+Document new steps.

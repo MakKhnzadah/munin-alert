@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Registration Test</h1>
+    
+    <div class="form-container">
+        <div class="form-group">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" value="Test">
+        </div>
+        
+        <div class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" value="User">
+        </div>
+        
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="testuser">
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="test@example.com">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" value="password123">
+        </div>
+        
+        <button id="registerBtn">Register</button>
+    </div>
+    
+    <div id="result" class="result">
+        <h3>Registration Result:</h3>
+        <pre id="resultContent"></pre>
+    </div>
+    
+    <script>
+        document.getElementById('registerBtn').addEventListener('click', async () => {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const userData = {
+                firstName,
+                lastName,
+                username,
+                email,
+                password
+            };
+            
+            const resultElement = document.getElementById('result');
+            const resultContent = document.getElementById('resultContent');
+            
+            try {
+                console.log('Sending registration request...');
+                console.log('Request data:', JSON.stringify(userData, null, 2));
+                
+                const response = await fetch('http://localhost:8081/api/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const responseData = await response.json();
+                
+                if (response.ok) {
+                    console.log('Registration successful:', responseData);
+                    resultContent.textContent = JSON.stringify(responseData, null, 2);
+                    resultElement.style.backgroundColor = '#dff0d8';
+                } else {
+                    console.error('Registration failed:', responseData);
+                    resultContent.textContent = JSON.stringify(responseData, null, 2);
+                    resultElement.style.backgroundColor = '#f2dede';
+                }
+                
+                resultElement.style.display = 'block';
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultContent.textContent = 'Error: ' + error.message;
+                resultElement.style.backgroundColor = '#f2dede';
+                resultElement.style.display = 'block';
+            }
+        });
+        
+        // Generate a random username and email on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const timestamp = Date.now();
+            const randomNum = Math.floor(Math.random() * 10000);
+            
+            document.getElementById('username').value = `test${randomNum}`;
+            document.getElementById('email').value = `test${randomNum}@example.com`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+@import '../../index.css';
+
+.mapPage-wrapper { position: relative; height: calc(100vh - 120px); max-width: 980px; margin: 0 auto; }
+.mapPage-header { text-align:center; font-weight: var(--font-weight-bold); font-size: 1.8rem; padding: 12px 0; }
+.mapPage-map { position: relative; height: calc(100% - 180px); margin: 0 12px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); }
+
+.mapPage-chat { position: absolute; left: 16px; right: 16px; bottom: 100px; display:flex; flex-direction:column; gap:8px; }
+.msg { max-width: 70%; padding: 10px 14px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+.msg-in { background:#e9e9e9; align-self:flex-start; color: var(--text-primary); }
+.msg-out { background:#111; color:#fff; align-self:flex-end; }
+.mapPage-chatInput { display:flex; gap:8px; margin-top: 6px; }
+.mapPage-chatInput input { flex:1; padding:10px 12px; border-radius:16px; border:1px solid #d0d0d0; }
+.mapPage-chatInput button { padding:10px 16px; border-radius:16px; border:0; background:#de4242; color:#fff; font-weight: var(--font-weight-bold); }

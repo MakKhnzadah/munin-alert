@@ -22,14 +22,17 @@ apiClient.interceptors.request.use(config => {
 
 // User-related API calls
 export const userService = {
-  // Get current user
-  getCurrentUser: () => apiClient.get('/users/current'),
+  // Get current authenticated user profile
+  getCurrentUser: () => apiClient.get('/users/me'),
   
   // Get user by ID
   getUserById: (userId) => apiClient.get(`/users/${userId}`),
   
-  // Update user profile
-  updateProfile: (userData) => apiClient.put('/users/profile', userData),
+  // Update user profile (requires user id)
+  updateProfile: (userId, userData) => apiClient.put(`/users/${userId}`, userData),
+
+  // Change password
+  changePassword: (userId, currentPassword, newPassword) => apiClient.put(`/users/${userId}/password`, { currentPassword, newPassword }),
   
   // Update user location
   updateLocation: (location) => apiClient.post('/users/location', location),

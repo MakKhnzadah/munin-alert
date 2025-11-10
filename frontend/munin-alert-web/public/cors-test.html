@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS Test for Munin Alert API</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow: auto; }
+        button { padding: 8px 12px; background: #4CAF50; color: white; border: none; cursor: pointer; margin-top: 10px; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CORS Test for Munin Alert API</h1>
+        <p>This page tests CORS configuration for the Munin Alert backend API.</p>
+        
+        <div>
+            <h2>1. Basic API Connectivity Test</h2>
+            <button id="testConnection">Test Connection</button>
+            <pre id="connectionResult">Results will appear here...</pre>
+        </div>
+
+        <div>
+            <h2>2. OPTIONS Pre-flight Test</h2>
+            <button id="testOptions">Test OPTIONS Request</button>
+            <pre id="optionsResult">Results will appear here...</pre>
+        </div>
+
+        <div>
+            <h2>3. User Registration Test</h2>
+            <button id="testRegistration">Test Registration</button>
+            <pre id="registrationResult">Results will appear here...</pre>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = "http://localhost:8081";
+        
+        // Test basic API connectivity
+        document.getElementById("testConnection").addEventListener("click", async () => {
+            const resultEl = document.getElementById("connectionResult");
+            resultEl.textContent = "Testing connection...";
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/`, {
+                    method: "GET"
+                });
+                
+                const data = await response.json();
+                let headers = "";
+                response.headers.forEach((value, name) => {
+                    headers += `${name}: ${value}\n`;
+                });
+                
+                resultEl.innerHTML = `<span class="success"> Connection successful (${response.status})</span>\n\nResponse:\n${JSON.stringify(data, null, 2)}\n\nHeaders:\n${headers}`;
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error"> Connection failed: ${error.message}</span>`;
+                console.error("Connection error:", error);
+            }
+        });
+        
+        // Test OPTIONS request (CORS pre-flight)
+        document.getElementById("testOptions").addEventListener("click", async () => {
+            const resultEl = document.getElementById("optionsResult");
+            resultEl.textContent = "Testing OPTIONS request...";
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: "OPTIONS",
+                    headers: {
+                        "Origin": window.location.origin,
+                        "Access-Control-Request-Method": "POST",
+                        "Access-Control-Request-Headers": "Content-Type, Authorization"
+                    }
+                });
+                
+                let headers = "";
+                response.headers.forEach((value, name) => {
+                    headers += `${name}: ${value}\n`;
+                });
+                
+                if (response.status === 200 || response.status === 204) {
+                    resultEl.innerHTML = `<span class="success"> OPTIONS request successful (${response.status})</span>\n\nCORS Headers:\n${headers}`;
+                } else {
+                    resultEl.innerHTML = `<span class="error"> OPTIONS request failed: ${response.status}</span>\n\nHeaders:\n${headers}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error"> OPTIONS request failed: ${error.message}</span>`;
+                console.error("OPTIONS error:", error);
+            }
+        });
+        
+        // Test user registration
+        document.getElementById("testRegistration").addEventListener("click", async () => {
+            const resultEl = document.getElementById("registrationResult");
+            resultEl.textContent = "Testing registration...";
+            
+            const randomSuffix = Math.floor(Math.random() * 10000);
+            const userData = {
+                firstName: "Test",
+                lastName: "User",
+                username: `testuser${randomSuffix}`,
+                email: `testuser${randomSuffix}@example.com`,
+                password: "password123",
+                phoneNumber: "1234567890"
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Origin": window.location.origin
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                let headers = "";
+                response.headers.forEach((value, name) => {
+                    headers += `${name}: ${value}\n`;
+                });
+                
+                try {
+                    const data = await response.json();
+                    if (response.ok) {
+                        resultEl.innerHTML = `<span class="success"> Registration successful (${response.status})</span>\n\nUser: ${userData.username}\n\nResponse:\n${JSON.stringify(data, null, 2)}\n\nHeaders:\n${headers}`;
+                    } else {
+                        resultEl.innerHTML = `<span class="error"> Registration failed (${response.status})</span>\n\nResponse:\n${JSON.stringify(data, null, 2)}\n\nHeaders:\n${headers}`;
+                    }
+                } catch (e) {
+                    const text = await response.text();
+                    resultEl.innerHTML = `<span class="error"> Registration failed (${response.status})</span>\n\nResponse (not JSON):\n${text}\n\nHeaders:\n${headers}`;
+                }
+            } catch (error) {
+                resultEl.innerHTML = `<span class="error"> Registration failed: ${error.message}</span>\nThis could be due to a CORS error or network issue.`;
+                console.error("Registration error:", error);
+            }
+        });
+    </script>
+</body>
+</html>

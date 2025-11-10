@@ -23,6 +23,10 @@ import ActivateAlarmPage from './pages/Alarm/ActivateAlarmPage';
 import AlarmCountdownPage from './pages/Alarm/AlarmCountdownPage';
 import MapPage from './pages/Map/MapPage';
 
+
+
+import About from './pages/About/About';
+
 /**
  * App Component
  * 
@@ -54,6 +58,7 @@ function App() {
         <Routes>
           {/* Public routes - accessible to all users */}
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
           
           {/* Guest-only routes - redirect to dashboard if already logged in */}
           <Route 
@@ -99,9 +104,12 @@ function App() {
             element={user ? <MapPage /> : <Navigate to="/login" />}
           />
           
-          {/* Fallback route for non-existent paths */}
-          {/* Testing route for backend connectivity */}
+          
+          {/* Utilities */}
           <Route path="/backend-test" element={<BackendTest />} />
+
+
+          {/* Fallback route for non-existent paths */}
           
           <Route path="*" element={<NotFound />} />
         </Routes>

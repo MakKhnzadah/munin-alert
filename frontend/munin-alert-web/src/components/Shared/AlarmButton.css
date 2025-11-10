@@ -1,0 +1,33 @@
+@import '../../index.css';
+
+.alarmBtn-wrap { display:flex; flex-direction:column; align-items:center; gap:12px; }
+.alarmBtn-label { font-weight: var(--font-weight-medium); color: var(--text-primary); }
+
+.alarmBtn {
+  position: relative;
+  width: 260px; height: 260px;
+  border-radius: 50%;
+  border: none; cursor: pointer;
+  background: radial-gradient(60% 60% at 50% 50%, #ff6b6b 0%, #e34747 70%, #c83d3d 100%);
+  box-shadow: 0 12px 30px rgba(234, 86, 80, 0.45), inset 0 4px 12px rgba(255,255,255,.35);
+}
+
+.alarmBtn:active { transform: translateY(1px); }
+
+.alarmBtn::before {
+  /* outer soft ring */
+  content: '';
+  position:absolute; inset:-22px;
+  border-radius:50%;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(234,86,80,0.25), rgba(234,86,80,0) 70%);
+}
+
+.alarmBtn-core {
+  position: absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:64px; font-weight: 800; text-shadow: 0 2px 2px rgba(0,0,0,.25);
+}
+
+.alarmBtn-progress { position:absolute; inset:-5px; width:270px; height:270px; transform: rotate(-90deg); }
+.alarmBtn-progress circle { fill:none; stroke-width:10px; }
+.alarmBtn-progress .bg { stroke: rgba(0,0,0,0.08); }
+.alarmBtn-progress .fg { stroke: #ffffff; stroke-linecap: round; transition: stroke-dasharray .03s linear; }

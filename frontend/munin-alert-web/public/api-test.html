@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munin Alert API Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        h1 {
+            color: #4a5568;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2d3748;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success {
+            border-color: #48bb78;
+            background-color: #f0fff4;
+        }
+        .error {
+            border-color: #f56565;
+            background-color: #fff5f5;
+        }
+        .url-info {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+    <h1>Munin Alert API Tester</h1>
+    
+    <div class="url-info">
+        Testing API at: <span id="apiUrl">http://localhost:8081</span>
+    </div>
+    
+    <h2>Register User</h2>
+    <form id="registerForm">
+        <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" value="Test" required>
+        </div>
+        <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" value="User" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" id="phoneNumber" value="1234567890">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" value="password123" required>
+        </div>
+        
+        <button type="submit">Register</button>
+    </form>
+    
+    <div class="result" id="result">Results will appear here</div>
+    
+    <h2>API Tests</h2>
+    <button id="testRoot">Test Root Endpoint</button>
+    <button id="testHealth">Test Health Endpoint</button>
+    <button id="testOptions">Test Register Options</button>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_URL = 'http://localhost:8081';
+            
+            // Generate random username/email
+            document.getElementById('username').value = 'user' + Math.floor(Math.random() * 10000);
+            document.getElementById('email').value = 'user' + Math.floor(Math.random() * 10000) + '@example.com';
+            
+            document.getElementById('registerForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const result = document.getElementById('result');
+                result.textContent = 'Sending request...';
+                result.className = 'result';
+                
+                const userData = {
+                    firstName: document.getElementById('firstName').value,
+                    lastName: document.getElementById('lastName').value,
+                    username: document.getElementById('username').value,
+                    email: document.getElementById('email').value,
+                    phoneNumber: document.getElementById('phoneNumber').value,
+                    password: document.getElementById('password').value
+                };
+                
+                try {
+                    console.log('Sending registration data:', userData);
+                    
+                    const response = await fetch(`${API_URL}/api/auth/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(userData)
+                    });
+                    
+                    console.log('Registration response status:', response.status);
+                    
+                    let responseText;
+                    try {
+                        const responseData = await response.json();
+                        responseText = JSON.stringify(responseData, null, 2);
+                    } catch (e) {
+                        responseText = await response.text();
+                    }
+                    
+                    if (response.ok) {
+                        result.textContent = `Success! Status: ${response.status}\n\n${responseText}`;
+                        result.classList.add('success');
+                    } else {
+                        result.textContent = `Error! Status: ${response.status}\n\n${responseText}`;
+                        result.classList.add('error');
+                    }
+                    
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    result.textContent = `Connection Error: ${error.message}`;
+                    result.classList.add('error');
+                }
+            });
+            
+            // Test endpoints
+            document.getElementById('testRoot').addEventListener('click', () => testEndpoint('/'));
+            document.getElementById('testHealth').addEventListener('click', () => testEndpoint('/api/health'));
+            document.getElementById('testOptions').addEventListener('click', () => testEndpoint('/api/auth/register', 'OPTIONS'));
+            
+            async function testEndpoint(endpoint, method = 'GET') {
+                const result = document.getElementById('result');
+                result.textContent = `Testing ${endpoint} with ${method}...`;
+                result.className = 'result';
+                
+                try {
+                    const response = await fetch(`${API_URL}${endpoint}`, {
+                        method: method,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    let responseText;
+                    try {
+                        const responseData = await response.json();
+                        responseText = JSON.stringify(responseData, null, 2);
+                    } catch (e) {
+                        responseText = await response.text() || '(No content)';
+                    }
+                    
+                    if (response.ok) {
+                        result.textContent = `Success! Status: ${response.status}\n\n${responseText}`;
+                        result.classList.add('success');
+                    } else {
+                        result.textContent = `Error! Status: ${response.status}\n\n${responseText}`;
+                        result.classList.add('error');
+                    }
+                    
+                } catch (error) {
+                    console.error('Test error:', error);
+                    result.textContent = `Connection Error: ${error.message}`;
+                    result.classList.add('error');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

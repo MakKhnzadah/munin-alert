@@ -1,0 +1,101 @@
+/* Settings page scaffold styles aligned with provided mockups */
+@import '../../index.css';
+
+.settings-wrapper {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) 96px; /* bottom space for logo block */
+  background: var(--bg);
+}
+
+.settings-title {
+  font-size: 2.75rem;
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 var(--space-4);
+  color: var(--text-primary);
+}
+
+.settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.settings-tile {
+  display: flex;
+  align-items: center;
+  background: #d9d9d9; /* light grey per mock */
+  border-radius: 32px; /* pill-like large radius */
+  padding: var(--space-3) var(--space-4);
+  font-size: 1.25rem;
+  line-height: 1.3;
+  cursor: pointer;
+  user-select: none;
+  transition: background .15s ease, box-shadow .2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+.settings-tile:focus-visible,
+.settings-tile:hover {
+  background: #cacaca;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+}
+
+.settings-tile:active {
+  background: #c2c2c2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18) inset;
+}
+
+.settings-tile-icon {
+  font-size: 1.55rem;
+  margin-right: var(--space-3);
+  display: inline-flex;
+  width: 2.2rem;
+  justify-content: center;
+}
+
+.settings-tile-label {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+/* Logo block at bottom */
+.settings-logoBlock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 16px 0 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg);
+}
+
+.settings-logoImg {
+  width: 140px;
+  height: auto;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.settings-logoText {
+  font-weight: var(--font-weight-bold);
+  font-size: 1.35rem;
+  letter-spacing: .5px;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.settings-progressBar {
+  width: 235px;
+  height: 6px;
+  border-radius: 3px;
+  background: #c4c4c4;
+}
+
+@media (max-width: 720px) {
+  .settings-wrapper { padding-left: var(--space-2); padding-right: var(--space-2); }
+  .settings-title { font-size: 2.4rem; }
+  .settings-tile { font-size: 1.15rem; }
+}

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Munin Alert API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background-color: #45a049;
+        }
+        .result {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #fff;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+            border-radius: 4px 4px 0 0;
+        }
+        .tab.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Munin Alert API Test</h1>
+    
+    <div class="tabs">
+        <div class="tab active" data-tab="api-test">API Tests</div>
+        <div class="tab" data-tab="registration">Registration</div>
+        <div class="tab" data-tab="login">Login</div>
+        <div class="tab" data-tab="protected">Protected API</div>
+    </div>
+    
+    <div id="api-test" class="tab-content active">
+        <div class="card">
+            <h2>Basic API Tests</h2>
+            <p>Test connection to the backend API and perform basic operations</p>
+            <button class="btn" id="testConnection">Test API Connection</button>
+            <button class="btn" id="testCorsOptions">Test CORS OPTIONS</button>
+            <div id="apiResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="registration" class="tab-content">
+        <div class="card">
+            <h2>User Registration</h2>
+            <div class="form-group">
+                <label for="regFirstName">First Name:</label>
+                <input type="text" id="regFirstName" value="Test">
+            </div>
+            <div class="form-group">
+                <label for="regLastName">Last Name:</label>
+                <input type="text" id="regLastName" value="User">
+            </div>
+            <div class="form-group">
+                <label for="regUsername">Username:</label>
+                <input type="text" id="regUsername" value="">
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email:</label>
+                <input type="email" id="regEmail" value="">
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password:</label>
+                <input type="password" id="regPassword" value="password123">
+            </div>
+            <button class="btn" id="registerBtn">Register User</button>
+            <div id="regResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="login" class="tab-content">
+        <div class="card">
+            <h2>User Login</h2>
+            <div class="form-group">
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" value="">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" value="password123">
+            </div>
+            <button class="btn" id="loginBtn">Login</button>
+            <div id="loginResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <div id="protected" class="tab-content">
+        <div class="card">
+            <h2>Protected API Access</h2>
+            <div class="form-group">
+                <label for="authToken">Authentication Token:</label>
+                <input type="text" id="authToken" placeholder="JWT Token">
+            </div>
+            <button class="btn" id="getUserBtn">Get User Data</button>
+            <div id="protectedResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:8081';
+        
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+        
+        // Generate random username and email
+        const generateRandomUserData = () => {
+            const randomNum = Math.floor(Math.random() * 10000);
+            document.getElementById('regUsername').value = `testuser${randomNum}`;
+            document.getElementById('regEmail').value = `test${randomNum}@example.com`;
+        };
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            generateRandomUserData();
+        });
+        
+        // API Test functions
+        document.getElementById('testConnection').addEventListener('click', async () => {
+            const resultElement = document.getElementById('apiResult');
+            resultElement.style.display = 'block';
+            resultElement.textContent = 'Testing connection to API...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/`);
+                const data = await response.json();
+                
+                resultElement.textContent = `Connection successful!\nResponse: ${JSON.stringify(data, null, 2)}`;
+            } catch (error) {
+                resultElement.textContent = `Error connecting to API: ${error.message}`;
+            }
+        });
+        
+        document.getElementById('testCorsOptions').addEventListener('click', async () => {
+            const resultElement = document.getElementById('apiResult');
+            resultElement.style.display = 'block';
+            resultElement.textContent = 'Testing CORS OPTIONS request...';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST'
+                    }
+                });
+                
+                let result = `Status: ${response.status} ${response.statusText}\n\nHeaders:\n`;
+                response.headers.forEach((value, name) => {
+                    result += `${name}: ${value}\n`;
+                });
+                
+                resultElement.textContent = result;
+            } catch (error) {
+                resultElement.textContent = `Error with OPTIONS request: ${error.message}`;
+            }
+        });
+        
+        // Registration function
+        document.getElementById('registerBtn').addEventListener('click', async () => {
+            const resultElement = document.getElementById('regResult');
+            resultElement.style.display = 'block';
+            resultElement.textContent = 'Registering user...';
+            
+            const userData = {
+                firstName: document.getElementById('regFirstName').value,
+                lastName: document.getElementById('regLastName').value,
+                username: document.getElementById('regUsername').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(userData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultElement.textContent = `Registration successful!\nResponse: ${JSON.stringify(data, null, 2)}`;
+                    
+                    // Auto-fill login form with new credentials
+                    document.getElementById('loginUsername').value = userData.username;
+                    document.getElementById('loginPassword').value = userData.password;
+                    
+                    // Save token for protected requests
+                    if (data.token) {
+                        document.getElementById('authToken').value = data.token;
+                    }
+                } else {
+                    resultElement.textContent = `Registration failed!\nError: ${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultElement.textContent = `Error during registration: ${error.message}`;
+            }
+        });
+        
+        // Login function
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const resultElement = document.getElementById('loginResult');
+            resultElement.style.display = 'block';
+            resultElement.textContent = 'Logging in...';
+            
+            const loginData = {
+                username: document.getElementById('loginUsername').value,
+                password: document.getElementById('loginPassword').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultElement.textContent = `Login successful!\nResponse: ${JSON.stringify(data, null, 2)}`;
+                    
+                    // Save token for protected requests
+                    if (data.token) {
+                        document.getElementById('authToken').value = data.token;
+                    }
+                } else {
+                    resultElement.textContent = `Login failed!\nError: ${JSON.stringify(data, null, 2)}`;
+                }
+            } catch (error) {
+                resultElement.textContent = `Error during login: ${error.message}`;
+            }
+        });
+        
+        // Protected API function
+        document.getElementById('getUserBtn').addEventListener('click', async () => {
+            const resultElement = document.getElementById('protectedResult');
+            resultElement.style.display = 'block';
+            resultElement.textContent = 'Fetching user data...';
+            
+            const token = document.getElementById('authToken').value;
+            
+            if (!token) {
+                resultElement.textContent = 'No authentication token provided!';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    resultElement.textContent = `User data retrieved!\nResponse: ${JSON.stringify(data, null, 2)}`;
+                } else {
+                    const text = await response.text();
+                    resultElement.textContent = `Failed to get user data!\nStatus: ${response.status} ${response.statusText}\nResponse: ${text}`;
+                }
+            } catch (error) {
+                resultElement.textContent = `Error accessing protected endpoint: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

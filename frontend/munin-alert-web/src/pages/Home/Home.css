@@ -1,93 +1,147 @@
+/* ==== Global brand color palette ==== */
+:root {
+  --brand-red: #e53935;        /* Primary accent (strong but clean red) */
+  --brand-red-dark: #c62828;   /* Darker red for hover/contrast */
+  --success: #2e7d32;          /* Complementary green */
+  --success-dark: #1b5e20;     /* Deep green for hover */
+  --surface: #ffffff;          /* Clean white background */
+  --text-primary: #222;        /* Neutral dark text for readability */
+  --text-secondary: #555;      /* Softer gray for subtitles */
+  --neutral-300: #e0e0e0;      /* Subtle border gray */
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.08);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+/* ==== Layout ==== */
 .home {
   display: flex;
   flex-direction: column;
+  background-color: var(--surface);
+  color: var(--text-primary);
 }
 
-/* Hero section matches mobile design: light background, centered logo + title */
+/* ==== Hero Section ==== */
 .hero-container {
-  background: var(--bg);
-  min-height: 75vh;
+  background: var(--surface);
+  /* Fill the viewport so content (logo + title) sits perfectly centered */
+  /* Use dynamic viewport and optionally subtract fixed header height if set */
+  min-height: calc(100dvh - var(--nav-height, 0px));
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: var(--space-4) var(--space-3);
+  /* slightly reduce bottom padding and tighten stack */
+  padding: 2.5rem 1.25rem 2.75rem;
+  position: relative;
+}
+
+.hero-container h1,
+.hero-title {
+  /* Solid, no multi-color text. Use dark for strong readability */
+  color: var(--brand-red);
+  font-size: clamp(2.5rem, 6vw, 4.5rem); /* responsive scaling */
+  font-weight: var(--font-weight-bold);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.5px;
 }
 
 .hero-container h1 {
-  color: var(--text-primary);
+  color: var(--brand-red);
   font-size: 56px;
   font-weight: var(--font-weight-bold);
-  margin: 0 0 var(--space-2);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.5px;
 }
 
 .hero-container p {
-  margin-top: var(--space-1);
+  margin-top: 0.5rem;
   color: var(--text-secondary);
   font-size: 22px;
 }
 
 .hero-btns {
-  margin-top: 32px;
+  margin-top: 2rem;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
+/* ==== Buttons ==== */
 .hero-btns .btn {
-  margin: 6px;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-bold);
+  font-size: 1rem;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  cursor: pointer;
 }
 
-/* Override primary in hero to use neutral login style for GET STARTED */
+/* Primary CTA (Green button) */
 .hero-btns .btn-primary {
-  background: #d9d9d9;
-  color: #111;
-  border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-  font-weight: var(--font-weight-bold);
+  background: var(--success);
+  color: #fff;
+  box-shadow: var(--shadow-md);
+  border: none;
 }
 
 .hero-btns .btn-primary:hover,
-.hero-btns .btn-primary:focus { background: #cfcfcf; }
-.hero-btns .btn-primary:active { transform: translateY(1px); }
+.hero-btns .btn-primary:focus {
+  background: var(--success-dark);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.25);
+}
 
+.hero-btns .btn-primary:active {
+  transform: translateY(1px);
+}
+
+/* Secondary CTA (Outline Red button) */
 .btn-outline {
-  background-color: #fff; /* keep white base like the design */
+  background-color: var(--surface);
   color: var(--brand-red);
-  padding: 10px 20px;
   border: 2px solid var(--brand-red);
-  border-radius: var(--radius-md);
-  font-weight: var(--font-weight-medium);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.05s ease;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08); /* subtle elevation like mockup */
+  box-shadow: var(--shadow-md);
 }
 
 .btn-outline:hover {
-  background-color: rgba(255,59,48,0.06); /* light red tint on hover */
-  color: var(--brand-red);
+  background-color: rgba(229, 57, 53, 0.06);
 }
 
 .btn-outline:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(255,59,48,0.25), 0 6px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.25);
 }
 
 .btn-outline:active {
-  background-color: rgba(255,59,48,0.12); /* a bit stronger on press */
-  border-color: var(--brand-red);
-  color: var(--brand-red);
+  background-color: rgba(229, 57, 53, 0.12);
   transform: translateY(1px);
 }
 
-/* Feature cards area */
+/* ==== Features Section ==== */
 .features-section {
   padding: 64px 20px;
   text-align: center;
-  background-color: var(--bg);
+  background: var(--surface);
 }
 
 .features-section h2 {
   font-size: 40px;
   margin-bottom: 40px;
+  color: var(--brand-red);
+  position: relative;
+}
+
+.features-section h2::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--success);
+  margin: 12px auto 0;
+  border-radius: 2px;
 }
 
 .features-container {
@@ -106,32 +160,111 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--neutral-300);
+  position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+
+.hero-logo {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.hero-logo .logo-img {
+  width: clamp(160px, 20vw, 240px);
+  height: auto;
+  display: block;
+  /* reduce space below logo for tighter hero */
+  margin: 0 auto 18px;
+  /* Optional tiny horizontal nudge in case the SVG viewBox has extra padding */
+  transform: translateX(var(--logo-nudge-x, 0));
+  filter: drop-shadow(0 12px 26px rgba(0,0,0,0.14));
+}
+
+.hero-logo::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(220px, 28vw, 360px);
+  height: clamp(220px, 28vw, 360px);
+  background: radial-gradient(circle at 50% 50%, rgba(229,57,53,0.08), transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* already positioned above */
+
+.hero-tagline {
+  color: var(--text-secondary);
+  font-size: clamp(1.05rem, 2.2vw, 1.45rem);
+  max-width: 680px;
+  margin: 0 auto 2.25rem;
+}
 .feature-card:hover {
   transform: translateY(-10px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+}
+
+/* Accent bar */
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--success);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.features-container .feature-card:nth-child(even)::before {
+  background: var(--success);
 }
 
 .feature-icon {
-  font-size: 50px;
+  font-size: 28px;
+  color: var(--success);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
+  background: rgba(46, 125, 50, 0.12);
+}
+.features-container .feature-card:nth-child(even) .feature-icon {
+  color: var(--success);
+  background: rgba(125, 46, 46, 0.12);
 }
 
 .feature-card h3 {
   margin-bottom: 15px;
-  color: var(--brand-red);
+  color: var(--success);
   font-weight: var(--font-weight-medium);
 }
 
+.features-container .feature-card:nth-child(even) h3 {
+  color: var(--success);
+}
+
+/* ==== How It Works Section ==== */
 .how-it-works {
   padding: 80px 20px;
   text-align: center;
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    rgba(46, 125, 50, 0.05) 100%
+  );
 }
 
 .how-it-works h2 {
   font-size: 40px;
   margin-bottom: 40px;
+  color: var(--brand-red);
 }
 
 .steps-container {
@@ -147,6 +280,15 @@
   margin: 20px;
   padding: 20px;
   position: relative;
+  background-color: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.step:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
 .step-number {
@@ -164,12 +306,29 @@
   box-shadow: var(--shadow-md);
 }
 
+/* Even steps use green for visual rhythm */
+.steps-container .step:nth-child(even) .step-number {
+  background-color: var(--success);
+}
+
+/* Focus ring */
+.feature-card[role="button"]:focus-visible,
+.step[role="button"]:focus-visible {
+  outline: 3px solid rgba(46, 125, 50, 0.5);
+  outline-offset: 3px;
+}
+
+/* Step titles */
 .step h3 {
   margin-bottom: 15px;
   color: var(--brand-red);
   font-weight: var(--font-weight-medium);
 }
+.steps-container .step:nth-child(even) h3 {
+  color: var(--success);
+}
 
+/* ==== Responsive Typography ==== */
 @media screen and (max-width: 960px) {
   .hero-container h1 {
     font-size: 42px;
