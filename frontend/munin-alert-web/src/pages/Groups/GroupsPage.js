@@ -30,16 +30,24 @@ const GroupsPage = () => {
     fetchGroups();
   }, []);
 
-  // Fetch user's groups
+  // Fetch groups for the current user
   const fetchGroups = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('/api/groups/user');
-      setGroups(response.data);
-      setLoading(false);
+      // Backend exposes GET /api/groups to return groups where the user is a member
+      const response = await axios.get('/api/groups');
+      setGroups(response.data || []);
+      setError(null);
     } catch (err) {
       console.error('Error fetching groups:', err);
-      setError('Failed to load groups. Please try again later.');
+      if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+        setError('Authorization failed. Please log in again.');
+      } else if (err.request) {
+        setError('Network error: unable to reach server.');
+      } else {
+        setError('Failed to load groups. Please try again later.');
+      }
+    } finally {
       setLoading(false);
     }
   };

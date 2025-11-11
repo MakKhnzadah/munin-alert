@@ -28,8 +28,8 @@ const AlertPage = () => {
         const alertsResponse = await axios.get('/api/alerts');
         setAlerts(alertsResponse.data);
         
-        // Fetch user's groups
-        const groupsResponse = await axios.get('/api/groups/user');
+  // Fetch user's groups (backend returns member groups at GET /api/groups)
+  const groupsResponse = await axios.get('/api/groups');
         setGroups(groupsResponse.data);
         
         setLoading(false);

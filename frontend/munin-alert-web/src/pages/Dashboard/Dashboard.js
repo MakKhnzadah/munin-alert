@@ -3,6 +3,16 @@ import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import './Dashboard.css';
 
+/**
+ * Dashboard aggregates alerts, groups and recent events for the current user.
+ * Original implementation used endpoints '/api/alerts/recent', '/api/groups/user', '/api/events/recent'
+ * which do not exist in the backend. Adjusted to align with available controllers:
+ *  - Alerts: GET /api/alerts returns alerts for current user (AlertController#getAllAlerts)
+ *  - Groups: GET /api/groups returns groups where current user is a member (GroupController#getAllGroups)
+ *  - Recent Events: GET /api/events/my-events/recent?limit=10 (EventController#getMyRecentEvents)
+ * Enhanced error handling now distinguishes auth vs network vs generic errors.
+ */
+
 const Dashboard = () => {
   const { user } = useAuth();
   const [alerts, setAlerts] = useState([]);
@@ -12,31 +22,40 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch data when component mounts
     const fetchDashboardData = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        
-        // Fetch recent alerts
-        const alertsResponse = await axios.get('/api/alerts/recent');
-        setAlerts(alertsResponse.data);
-        
-        // Fetch user's groups
-        const groupsResponse = await axios.get('/api/groups/user');
-        setGroups(groupsResponse.data);
-        
-        // Fetch recent events
-        const eventsResponse = await axios.get('/api/events/recent');
-        setRecentEvents(eventsResponse.data);
-        
-        setLoading(false);
+        // Alerts for current user
+        const alertsResponse = await axios.get('/api/alerts');
+        setAlerts(alertsResponse.data || []);
+
+        // Groups for current user
+        const groupsResponse = await axios.get('/api/groups');
+        setGroups(groupsResponse.data || []);
+
+        // Recent events for current user (limit 10)
+        const eventsResponse = await axios.get('/api/events/my-events/recent?limit=10');
+        setRecentEvents(eventsResponse.data || []);
+
+        setError(null);
       } catch (err) {
         console.error('Error fetching dashboard data:', err);
-        setError('Failed to load dashboard data. Please try again later.');
+        // Granular error message
+        if (err.response) {
+          if (err.response.status === 401 || err.response.status === 403) {
+            setError('Authorization failed. Please log in again.');
+          } else {
+            setError(`Server error (${err.response.status}). Could not load dashboard.`);
+          }
+        } else if (err.request) {
+          setError('Network error: unable to reach server. Check your connection.');
+        } else {
+          setError('Unexpected error loading dashboard data.');
+        }
+      } finally {
         setLoading(false);
       }
     };
-    
     fetchDashboardData();
   }, []);
 
@@ -56,7 +75,15 @@ const Dashboard = () => {
   };
 
   if (loading) return <div className="loading">Loading dashboard...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (error) {
+    return (
+      <div className="dashboard error-state">
+        <h1>Dashboard</h1>
+        <p className="error">{error}</p>
+        <button className="btn btn-primary" onClick={() => window.location.reload()}>Retry</button>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard">

@@ -35,14 +35,16 @@ const Home = () => {
   return (
     <div className="home">
       <div className="hero-container">
-        <div className="hero-logo" aria-label="Munin Alert Logo">
-          <img src={LogoShield} alt="Munin Alert shield logo" className="logo-img" />
-        </div>
-        <h1 className="hero-title">MUNIN ALERT</h1>
-        <p className="hero-tagline">Your comprehensive safety solution</p>
-        <div className="hero-btns">
-          <button className="btn btn-primary" onClick={handleGetStarted}>GET STARTED</button>
-          <button className="btn btn-outline" onClick={handleLearnMore}>LEARN MORE</button>
+        <div className="hero-content" role="banner">
+          <div className="hero-logo" aria-label="Munin Alert Logo">
+            <img src={LogoShield} alt="Munin Alert shield logo" className="logo-img" />
+          </div>
+          <h1 className="hero-title">MUNIN ALERT</h1>
+          <p className="hero-tagline">Your comprehensive safety solution</p>
+          <div className="hero-btns">
+            <button className="btn btn-primary" onClick={handleGetStarted}>GET STARTED</button>
+            <button className="btn btn-outline" onClick={handleLearnMore}>LEARN MORE</button>
+          </div>
         </div>
       </div>
       
