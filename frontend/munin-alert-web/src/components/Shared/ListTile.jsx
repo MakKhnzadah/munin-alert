@@ -9,8 +9,22 @@ import './ListTile.css';
  * - onClick: function
  */
 export default function ListTile({ icon, label, onClick }) {
+  const onKeyDown = (e) => {
+    if (!onClick) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClick(e);
+    }
+  };
   return (
-    <div className="listTile" role="button" tabIndex={0} onClick={onClick}>
+    <div
+      className="listTile"
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      aria-label={label}
+    >
       <span className="listTile-icon" aria-hidden>{icon}</span>
       <span className="listTile-label">{label}</span>
     </div>

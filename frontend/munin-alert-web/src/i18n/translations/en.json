@@ -9,6 +9,7 @@
     "alerts": "Alerts",
     "groups": "Groups",
     "profile": "Profile",
+    "settings": "Settings",
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
@@ -55,6 +56,28 @@
       "network": "Network error: unable to reach server. Check your connection.",
       "server": "Server error ({code}). Could not load dashboard.",
       "unexpected": "Unexpected error loading dashboard data."
+    }
+  }
+  ,
+  "settings": {
+    "title": "Settings",
+    "tiles": {
+      "account": "Account",
+      "groups": "Groups",
+      "safehavens": "Safe Havens",
+      "alarm": "Alarm Activation",
+      "language": "Language",
+      "help": "Help"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Select the language for the interface.",
+      "label": "Language",
+      "options": {
+        "en": "English",
+        "no": "Norwegian"
+      },
+      "saved": "Language updated"
     }
   }
 }

@@ -55,6 +55,7 @@ const Navbar = () => {
               <li className="nav-item"><Link to="/dashboard" className="nav-link">{t('nav.dashboard')}</Link></li>
               <li className="nav-item"><Link to="/alerts" className="nav-link">{t('nav.alerts')}</Link></li>
               <li className="nav-item"><Link to="/groups" className="nav-link">{t('nav.groups')}</Link></li>
+              <li className="nav-item"><Link to="/settings" className="nav-link">{t('nav.settings')}</Link></li>
               <li className="nav-item"><Link to="/profile" className="nav-link">{t('nav.profile')}</Link></li>
               <li className="nav-item">
                 <button onClick={handleLogout} className="logout-btn">{t('nav.logout')}</button>

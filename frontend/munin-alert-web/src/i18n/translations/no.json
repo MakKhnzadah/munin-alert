@@ -9,6 +9,7 @@
     "alerts": "Varsler",
     "groups": "Grupper",
     "profile": "Profil",
+    "settings": "Innstillinger",
     "login": "Logg inn",
     "register": "Registrer",
     "logout": "Logg ut",
@@ -55,6 +56,28 @@
       "network": "Nettverksfeil: server ikke tilgjengelig.",
       "server": "Serverfeil ({code}). Kunne ikke laste dashbord.",
       "unexpected": "Uventet feil ved lasting av data."
+    }
+  }
+  ,
+  "settings": {
+    "title": "Innstillinger",
+    "tiles": {
+      "account": "Konto",
+      "groups": "Grupper",
+      "safehavens": "Trygge steder",
+      "alarm": "Alarmaktivering",
+      "language": "Språk",
+      "help": "Hjelp"
+    },
+    "language": {
+      "title": "Språk",
+      "description": "Velg språk for grensesnittet.",
+      "label": "Språk",
+      "options": {
+        "en": "Engelsk",
+        "no": "Norsk"
+      },
+      "saved": "Språk oppdatert"
     }
   }
 }
