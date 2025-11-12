@@ -1,0 +1,60 @@
+{
+  "brand": {
+    "name": "Munin Alert",
+    "tagline": "Your comprehensive safety solution"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "alerts": "Alerts",
+    "groups": "Groups",
+    "profile": "Profile",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "about": "About"
+  },
+  "home": {
+    "getStarted": "GET STARTED",
+    "learnMore": "LEARN MORE",
+    "keyFeatures": "Key Features",
+    "features": {
+      "alerts": {"title": "Real-time Alerts", "desc": "Instantly notify your trusted contacts in case of emergency"},
+      "location": {"title": "Location Tracking", "desc": "Share your location with trusted contacts for safety"},
+      "groups": {"title": "Group Safety", "desc": "Create safety groups for family, friends, or team members"},
+      "messaging": {"title": "Emergency Messaging", "desc": "Quick communication during critical situations"}
+    },
+    "howItWorks": "How It Works",
+    "steps": {
+      "1": {"title": "Create an Account", "desc": "Sign up and set up your safety profile"},
+      "2": {"title": "Add Trusted Contacts", "desc": "Create groups with family and friends"},
+      "3": {"title": "Enable Location Sharing", "desc": "Share your location with your trusted contacts"},
+      "4": {"title": "Activate When Needed", "desc": "Trigger alerts in emergency situations"}
+    }
+  },
+  "dashboard": {
+    "welcome": "Welcome, {name}",
+    "lastLogin": "Last login: {time}",
+    "quickActions": "Quick Actions",
+    "actions": {
+      "trigger": "Trigger Alert",
+      "newGroup": "New Group",
+      "addContact": "Add Contact",
+      "havens": "View Safe Havens"
+    },
+    "recentAlerts": "Recent Alerts",
+    "noRecentAlerts": "No recent alerts",
+    "yourGroups": "Your Groups",
+    "noGroups": "You don't have any groups yet",
+    "recentActivity": "Recent Activity",
+    "noRecentActivity": "No recent activity",
+    "loading": "Loading dashboard...",
+    "retry": "Retry",
+    "error": {
+      "auth": "Authorization failed. Please log in again.",
+      "network": "Network error: unable to reach server. Check your connection.",
+      "server": "Server error ({code}). Could not load dashboard.",
+      "unexpected": "Unexpected error loading dashboard data."
+    }
+  }
+}

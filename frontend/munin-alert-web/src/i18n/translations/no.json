@@ -1,0 +1,60 @@
+{
+  "brand": {
+    "name": "Munin Alert",
+    "tagline": "Din komplette sikkerhetsløsning"
+  },
+  "nav": {
+    "home": "Hjem",
+    "dashboard": "Dashbord",
+    "alerts": "Varsler",
+    "groups": "Grupper",
+    "profile": "Profil",
+    "login": "Logg inn",
+    "register": "Registrer",
+    "logout": "Logg ut",
+    "about": "Om"
+  },
+  "home": {
+    "getStarted": "KOM I GANG",
+    "learnMore": "LES MER",
+    "keyFeatures": "Nøkkelfunksjoner",
+    "features": {
+      "alerts": {"title": "Sanntidsvarsler", "desc": "Varsle dine betrodde kontakter umiddelbart ved nødsituasjon"},
+      "location": {"title": "Posisjonssporing", "desc": "Del din posisjon med betrodde kontakter for trygghet"},
+      "groups": {"title": "Gruppesikkerhet", "desc": "Opprett sikkerhetsgrupper for familie, venner eller team"},
+      "messaging": {"title": "Nødmeldinger", "desc": "Rask kommunikasjon i kritiske situasjoner"}
+    },
+    "howItWorks": "Slik Fungerer Det",
+    "steps": {
+      "1": {"title": "Opprett konto", "desc": "Registrer deg og sett opp din sikkerhetsprofil"},
+      "2": {"title": "Legg til betrodde kontakter", "desc": "Lag grupper med familie og venner"},
+      "3": {"title": "Aktiver posisjonsdeling", "desc": "Del posisjon med dine betrodde kontakter"},
+      "4": {"title": "Aktiver ved behov", "desc": "Utløs varsler ved nødsituasjoner"}
+    }
+  },
+  "dashboard": {
+    "welcome": "Velkommen, {name}",
+    "lastLogin": "Siste innlogging: {time}",
+    "quickActions": "Hurtighandlinger",
+    "actions": {
+      "trigger": "Utløs varsel",
+      "newGroup": "Ny gruppe",
+      "addContact": "Legg til kontakt",
+      "havens": "Vis trygge steder"
+    },
+    "recentAlerts": "Siste varsler",
+    "noRecentAlerts": "Ingen varsler",
+    "yourGroups": "Dine grupper",
+    "noGroups": "Du har ingen grupper ennå",
+    "recentActivity": "Siste aktivitet",
+    "noRecentActivity": "Ingen aktivitet",
+    "loading": "Laster dashbord...",
+    "retry": "Prøv igjen",
+    "error": {
+      "auth": "Autorisasjon feilet. Logg inn på nytt.",
+      "network": "Nettverksfeil: server ikke tilgjengelig.",
+      "server": "Serverfeil ({code}). Kunne ikke laste dashbord.",
+      "unexpected": "Uventet feil ved lasting av data."
+    }
+  }
+}

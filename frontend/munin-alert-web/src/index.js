@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { I18nProvider } from './i18n/I18nContext';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { AlarmProvider } from './context/AlarmContext';
@@ -35,11 +36,13 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <AlarmProvider>
-          <App />
-        </AlarmProvider>
-      </AuthProvider>
+      <I18nProvider>
+        <AuthProvider>
+          <AlarmProvider>
+            <App />
+          </AlarmProvider>
+        </AuthProvider>
+      </I18nProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

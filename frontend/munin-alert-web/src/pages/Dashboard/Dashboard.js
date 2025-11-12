@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import './Dashboard.css';
+import { useI18n } from '../../i18n/I18nContext';
 
 /**
  * Dashboard aggregates alerts, groups and recent events for the current user.
@@ -17,6 +18,7 @@ import './Dashboard.css';
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [alerts, setAlerts] = useState([]);
   const [groups, setGroups] = useState([]);
   const [recentEvents, setRecentEvents] = useState([]);
@@ -97,13 +99,13 @@ const Dashboard = () => {
     }
   };
 
-  if (loading) return <div className="loading">Loading dashboard...</div>;
+  if (loading) return <div className="loading">{t('dashboard.loading')}</div>;
   if (error) {
     return (
       <div className="dashboard error-state">
-        <h1>Dashboard</h1>
+        <h1>{t('nav.dashboard')}</h1>
         <p className="error">{error}</p>
-        <button className="btn btn-primary" onClick={() => window.location.reload()}>Retry</button>
+        <button className="btn btn-primary" onClick={() => window.location.reload()}>{t('dashboard.retry')}</button>
       </div>
     );
   }
@@ -111,27 +113,27 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-header">
-        <h1>Welcome, {user?.firstName || 'User'}</h1>
-        <p className="last-login">Last login: {formatDate(Date.now())}</p>
+        <h1>{t('dashboard.welcome', { name: user?.firstName || 'User' })}</h1>
+        <p className="last-login">{t('dashboard.lastLogin', { time: formatDate(Date.now()) })}</p>
       </div>
       
       <div className="dashboard-grid">
         {/* Quick Actions */}
         <div className="dashboard-card quick-actions">
-          <h2>Quick Actions</h2>
+          <h2>{t('dashboard.quickActions')}</h2>
           <div className="action-buttons">
-            <button className="btn btn-danger" onClick={handleTriggerAlert} aria-label="Trigger a new alert">Trigger Alert</button>
-            <button className="btn btn-primary" onClick={handleNewGroup} aria-label="Create a new group">New Group</button>
-            <button className="btn btn-secondary" onClick={handleAddContact} aria-label="Add a contact">Add Contact</button>
-            <button className="btn btn-info" onClick={handleViewSafeHavens} aria-label="View safe havens on the map">View Safe Havens</button>
+            <button className="btn btn-danger" onClick={handleTriggerAlert} aria-label={t('dashboard.actions.trigger')}>{t('dashboard.actions.trigger')}</button>
+            <button className="btn btn-primary" onClick={handleNewGroup} aria-label={t('dashboard.actions.newGroup')}>{t('dashboard.actions.newGroup')}</button>
+            <button className="btn btn-secondary" onClick={handleAddContact} aria-label={t('dashboard.actions.addContact')}>{t('dashboard.actions.addContact')}</button>
+            <button className="btn btn-info" onClick={handleViewSafeHavens} aria-label={t('dashboard.actions.havens')}>{t('dashboard.actions.havens')}</button>
           </div>
         </div>
         
         {/* Recent Alerts */}
         <div className="dashboard-card recent-alerts">
-          <h2>Recent Alerts</h2>
+          <h2>{t('dashboard.recentAlerts')}</h2>
           {alerts.length === 0 ? (
-            <p className="empty-state">No recent alerts</p>
+            <p className="empty-state">{t('dashboard.noRecentAlerts')}</p>
           ) : (
             <ul className="alert-list">
               {alerts.map(alert => (
@@ -153,9 +155,9 @@ const Dashboard = () => {
         
         {/* Your Groups */}
         <div className="dashboard-card your-groups">
-          <h2>Your Groups</h2>
+          <h2>{t('dashboard.yourGroups')}</h2>
           {groups.length === 0 ? (
-            <p className="empty-state">You don't have any groups yet</p>
+            <p className="empty-state">{t('dashboard.noGroups')}</p>
           ) : (
             <ul className="group-list">
               {groups.map(group => (
@@ -173,9 +175,9 @@ const Dashboard = () => {
         
         {/* Recent Activity */}
         <div className="dashboard-card activity-feed">
-          <h2>Recent Activity</h2>
+          <h2>{t('dashboard.recentActivity')}</h2>
           {recentEvents.length === 0 ? (
-            <p className="empty-state">No recent activity</p>
+            <p className="empty-state">{t('dashboard.noRecentActivity')}</p>
           ) : (
             <ul className="event-list">
               {recentEvents.map(event => (
