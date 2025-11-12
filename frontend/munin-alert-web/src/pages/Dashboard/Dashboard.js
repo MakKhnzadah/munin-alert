@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import './Dashboard.css';
@@ -15,11 +16,33 @@ import './Dashboard.css';
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [alerts, setAlerts] = useState([]);
   const [groups, setGroups] = useState([]);
   const [recentEvents, setRecentEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Quick Action handlers
+  const handleTriggerAlert = () => {
+    // Route to alerts page where user can create/trigger a new alert
+    navigate('/alerts');
+  };
+
+  const handleNewGroup = () => {
+    // Route to groups; pass state to optionally open create form if supported
+    navigate('/groups', { state: { openCreate: true } });
+  };
+
+  const handleAddContact = () => {
+    // Route to profile to manage contacts; adjust if a dedicated contacts page exists
+    navigate('/profile', { state: { focus: 'contacts' } });
+  };
+
+  const handleViewSafeHavens = () => {
+    // Map view that shows safe havens / points of interest
+    navigate('/map', { state: { filter: 'safe-havens' } });
+  };
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -97,10 +120,10 @@ const Dashboard = () => {
         <div className="dashboard-card quick-actions">
           <h2>Quick Actions</h2>
           <div className="action-buttons">
-            <button className="btn btn-danger">Trigger Alert</button>
-            <button className="btn btn-primary">New Group</button>
-            <button className="btn btn-secondary">Add Contact</button>
-            <button className="btn btn-info">View Safe Havens</button>
+            <button className="btn btn-danger" onClick={handleTriggerAlert} aria-label="Trigger a new alert">Trigger Alert</button>
+            <button className="btn btn-primary" onClick={handleNewGroup} aria-label="Create a new group">New Group</button>
+            <button className="btn btn-secondary" onClick={handleAddContact} aria-label="Add a contact">Add Contact</button>
+            <button className="btn btn-info" onClick={handleViewSafeHavens} aria-label="View safe havens on the map">View Safe Havens</button>
           </div>
         </div>
         
