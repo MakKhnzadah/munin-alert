@@ -6,7 +6,7 @@ import { useAlarm } from '../../context/AlarmContext';
 
 /**
  * AlarmCountdownPage
- * Displays detected energy/fall card, countdown timer, and cancel button.
+ * Displays detected Emergency, countdown timer, and cancel button.
  * After countdown it would trigger final alert (placeholder hook).
  */
 export default function AlarmCountdownPage() {
@@ -35,7 +35,7 @@ export default function AlarmCountdownPage() {
   return (
     <div className="alarmCountdown-wrapper">
       <div className="alarmCountdown-card">
-        <div className="alarmCountdown-alertTitle">Energy Detected</div>
+        <div className="alarmCountdown-alertTitle">Emergency Detected</div>
         <div className="alarmCountdown-alertSubtitle">Possible Fall or Crash</div>
       </div>
       <div className="alarmCountdown-timerText">
